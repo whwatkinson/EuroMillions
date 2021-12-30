@@ -5,7 +5,7 @@ from typing import Set
 class LuckDipTicket:
     def __init__(self):
         self.main_numbers = self.get_main_numbers()
-        self.lucky_numbers = self.get_main_numbers()
+        self.lucky_numbers = self.get_lucky_star_numbers()
         self.winner = False
         self.matches = 0
 
