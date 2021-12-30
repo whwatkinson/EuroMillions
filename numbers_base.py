@@ -10,18 +10,20 @@ class NumbersBase:
     lucky_numbers: set
 
     @staticmethod
-    def repr_formatter(numbers) -> str:
-        if not numbers:
-            return "{}"
+    def repr_formatter(numbers: Set[int]) -> str:
+        """
+        Handles the formatting of the numbers for the repr.
+        :param numbers: The lotto numbers
+        :return: A cleaned string
+        """
 
-        else:
-            return numbers
+        return str(numbers) if numbers else "{}"
 
     @staticmethod
     def clean_set(numbers_drawn: Optional[Set[int]] = None) -> Set[int]:
         """
         To create a new set as they are mutable and we want to add incrementally
-        :param numbers_drawn:
+        :param numbers_drawn: The number drawn from the bowl
         :return: A new set
         """
         if not numbers_drawn:
@@ -30,6 +32,11 @@ class NumbersBase:
             return numbers_drawn
 
     def __eq__(self, other) -> int:
+        """
+        An attempt to compare the tickets
+        :param other: The other ticket
+        :return: True is the tickets are the same
+        """
         h1 = hash(f"{sorted(list(self.main_numbers))}") + hash(
             f"{sorted(list(self.lucky_numbers))}"
         )

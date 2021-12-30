@@ -16,21 +16,46 @@ class LuckDipTicket(NumbersBase):
         self.lucky_matches_count = 0
         self.lucky_matches = self.clean_set()
         self.winner = False
+        self.has_both_lucky_numbers = False
 
     def main_number_match_check(self, number_drawn: int) -> None:
+        """
+        Checks the main numbers of the ticket
+        :param number_drawn: The number drawn from the bowl
+        :return:
+        """
         if number_drawn in self.main_numbers:
             self.main_matches_count += 1
             self.main_matches.add(number_drawn)
             self.winner = True
 
+            if self.main_matches_count == 5:
+                # TODO some logic here
+                pass
+
     def lucky_number_match_check(self, number_drawn: int) -> None:
+        """
+        Checks the lucky numbers of the ticket
+        :param number_drawn: The number drawn from the bowl
+        :return:
+        """
         if number_drawn in self.lucky_numbers:
             self.lucky_matches_count += 1
             self.lucky_matches.add(number_drawn)
             self.winner = True
 
+            if self.lucky_matches_count == 0:
+                # TODO needs a test
+                self.has_both_lucky_numbers = True
+
     @staticmethod
     def get_random_numbers(total_numbers: int, upper_bound: int) -> Set[int]:
+        """
+        Get an arbitary sized set of random numbers
+        :param total_numbers: The length of the desired set
+        :param upper_bound: The size of the set to be drawn from
+        :return:
+        """
         numbers = set()
         while len(numbers) != total_numbers:
             number = randint(1, upper_bound)
@@ -41,10 +66,18 @@ class LuckDipTicket(NumbersBase):
         return numbers
 
     def get_main_numbers(self) -> Set[int]:
+        """
+        Method to get the main numbers
+        :return:
+        """
         numbers = self.get_random_numbers(self.TOTAL_MAIN_NUMBERS, self.MAIN_NUMBERS)
         return numbers
 
     def get_lucky_numbers(self) -> Set[int]:
+        """
+        Method to get the lucky numbers
+        :return:
+        """
         numbers = self.get_random_numbers(self.TOTAL_LUCKY_NUMBERS, self.LUCKY_NUMBERS)
         return numbers
 
