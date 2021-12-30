@@ -5,7 +5,7 @@ from lucky_dip_ticket import LuckDipTicket, LuckDipTicketList
 
 
 class TestTicket:
-    def test_ticket(self):
+    def test_new_ticket(self):
 
         t = LuckDipTicket()
 
