@@ -6,7 +6,6 @@ NAMES_FP = path.abspath("names.txt")
 
 
 class Person:
-
     def __init__(self):
         self.uuid = uuid4()
         self.name = self.random_name(NAMES_FP)
@@ -18,4 +17,4 @@ class Person:
         return name
 
     def __repr__(self):
-        return f'person: {self.name}'
+        return f"person: {self.name}"

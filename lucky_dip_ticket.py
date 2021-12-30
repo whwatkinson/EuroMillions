@@ -1,20 +1,8 @@
 from random import randint
-from typing import Set
+from typing import List, Set
 from uuid import uuid4
 
 from numbers_base import NumbersBase
-
-
-class LuckDipTicketList:
-    def __init__(self, number_of_tickets: int = 5, ticket_cost: float = 2.5):
-        # Unique tickets?
-        self.tickets = [
-            LuckDipTicket(ticket_cost=ticket_cost) for _ in range(number_of_tickets)
-        ]
-        self.total_cost = sum(ticket.ticket_cost for ticket in self.tickets)
-
-    def __repr__(self):
-        return f"lucky dip tickets: {len(self.tickets)}"
 
 
 class LuckDipTicket(NumbersBase):
@@ -52,7 +40,62 @@ class LuckDipTicket(NumbersBase):
             f"lucky numbers:     {self.repr_formatter(self.lucky_numbers)}"
         )
 
-    def __hash__(self):
-        return hash(f"{sorted(list(self.main_numbers))}") + hash(
+    def __eq__(self, other):
+        h1 = hash(f"{sorted(list(self.main_numbers))}") + hash(
             f"{sorted(list(self.lucky_numbers))}"
+        )
+        h2 = hash(f"{sorted(list(other.main_numbers))}") + hash(
+            f"{sorted(list(other.lucky_numbers))}"
+        )
+        return h1 == h2
+
+
+class LuckDipTicketList:
+    def __init__(
+        self,
+        number_of_tickets: int = 5,
+        ticket_cost: float = 2.5,
+        duplicate_tickets: bool = False,
+    ):
+        self.tickets = self.get_tickets(
+            number_of_tickets, ticket_cost, duplicate_tickets
+        )
+        self.total_cost = sum(ticket.ticket_cost for ticket in self.tickets)
+        self.duplicate_tickets = duplicate_tickets
+
+    @staticmethod
+    def get_tickets(
+        number_of_tickets: int, ticket_cost: float, duplicate_tickets: bool
+    ) -> List[LuckDipTicket]:
+        """
+        Get the tickets
+        :param number_of_tickets: How many tickets
+        :param ticket_cost: How much a ticket costs
+        :param duplicate_tickets: Allow duplicates
+        :return: A list of tickets
+        """
+
+        if duplicate_tickets:
+            return [
+                LuckDipTicket(ticket_cost=ticket_cost) for _ in range(number_of_tickets)
+            ]
+
+        else:
+
+            tickets_list = []
+
+            while len(tickets_list) != number_of_tickets:
+                ticket = LuckDipTicket(ticket_cost)
+
+                if ticket in tickets_list:
+                    continue
+                else:
+                    tickets_list.append(ticket)
+
+            return tickets_list
+
+    def __repr__(self):
+        return (
+            f"lucky dip tickets: {len(self.tickets)}\n"
+            f"duplicate tickets: {self.duplicate_tickets}"
         )
