@@ -1,6 +1,7 @@
 from pytest import mark
 
-from lucky_dip_ticket import LuckDipTicket
+
+from lucky_dip_ticket import LuckDipTicket, LuckDipTicketList
 
 
 class TestTicket:
@@ -30,3 +31,16 @@ class TestTicket:
 
         for number in test_lucky_numbers:
             assert 0 < number < 12
+
+    @mark.parametrize(
+        "number_of_tickets, ticket_cost, expected_cost",
+        [
+            (5, 2.5, 12.5),
+            (100, 2.5, 250)
+        ]
+    )
+    def test_lucky_dip_ticket_list(self, number_of_tickets, ticket_cost, expected_cost):
+
+        tl = LuckDipTicketList(number_of_tickets, ticket_cost)
+
+        assert tl.total_cost == expected_cost
