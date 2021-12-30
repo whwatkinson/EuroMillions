@@ -2,26 +2,25 @@ from random import randint
 from typing import Set
 from uuid import uuid4
 
-from draw import MAIN_NUMBERS, LUCKY_NUMBERS, NUMBER_MAIN_NUMBERS, NUMBER_LUCKY_NUMBERS
 from numbers_base import NumbersBase
 
 
 class LuckDipTicketList:
     def __init__(self, number_of_tickets: int = 5, ticket_cost: float = 2.5):
         # Unique tickets?
-        self.tickets = [LuckDipTicket(ticket_cost=ticket_cost) for _ in range(number_of_tickets)]
+        self.tickets = [
+            LuckDipTicket(ticket_cost=ticket_cost) for _ in range(number_of_tickets)
+        ]
         self.total_cost = sum(ticket.ticket_cost for ticket in self.tickets)
 
     def __repr__(self):
-        return (
-            f"lucky dip tickets: {len(self.tickets)}"
-        )
+        return f"lucky dip tickets: {len(self.tickets)}"
 
 
 class LuckDipTicket(NumbersBase):
     def __init__(self, ticket_cost: float = 2.5):
         self.main_numbers = self.get_main_numbers()
-        self.lucky_numbers = self.get_lucky_star_numbers()
+        self.lucky_numbers = self.get_lucky_numbers()
         self.winner = False
         self.matches = 0
         self.ticket_cost = ticket_cost
@@ -39,11 +38,11 @@ class LuckDipTicket(NumbersBase):
         return numbers
 
     def get_main_numbers(self) -> Set[int]:
-        numbers = self.get_random_numbers(MAIN_NUMBERS, NUMBER_MAIN_NUMBERS)
+        numbers = self.get_random_numbers(self.TOTAL_MAIN_NUMBERS, self.MAIN_NUMBERS)
         return numbers
 
-    def get_lucky_star_numbers(self) -> Set[int]:
-        numbers = self.get_random_numbers(LUCKY_NUMBERS, NUMBER_LUCKY_NUMBERS)
+    def get_lucky_numbers(self) -> Set[int]:
+        numbers = self.get_random_numbers(self.TOTAL_LUCKY_NUMBERS, self.LUCKY_NUMBERS)
         return numbers
 
     def __repr__(self):
@@ -54,4 +53,6 @@ class LuckDipTicket(NumbersBase):
         )
 
     def __hash__(self):
-        return hash(f"{sorted(list(self.main_numbers))}") + hash(f"{sorted(list(self.lucky_numbers))}")
+        return hash(f"{sorted(list(self.main_numbers))}") + hash(
+            f"{sorted(list(self.lucky_numbers))}"
+        )

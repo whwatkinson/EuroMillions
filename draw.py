@@ -4,12 +4,6 @@ from random import randint
 from numbers_base import NumbersBase
 
 
-MAIN_NUMBERS = 5
-LUCKY_NUMBERS = 2
-NUMBER_MAIN_NUMBERS = 50
-NUMBER_LUCKY_NUMBERS = 12
-
-
 class DrawCompleteError(Exception):
     def __init__(self, number_of_draws):
         self.message = f"{number_of_draws} main numbers have already been drawn"
@@ -39,21 +33,20 @@ class Draw(NumbersBase):
             else:
                 numbers.add(number)
                 drawing = False
-        return numbers
 
     def draw_main_number(self):
 
-        if len(self.main_numbers) == MAIN_NUMBERS:
-            raise DrawCompleteError(number_of_draws=MAIN_NUMBERS)
+        if len(self.main_numbers) == self.TOTAL_MAIN_NUMBERS:
+            raise DrawCompleteError(number_of_draws=self.TOTAL_MAIN_NUMBERS)
 
-        self.draw_random_number(self.main_numbers, NUMBER_MAIN_NUMBERS)
+        self.draw_random_number(self.main_numbers, self.MAIN_NUMBERS)
 
     def draw_lucky_number(self):
 
-        if len(self.lucky_numbers) == LUCKY_NUMBERS:
-            raise DrawCompleteError(number_of_draws=LUCKY_NUMBERS)
+        if len(self.lucky_numbers) == self.TOTAL_LUCKY_NUMBERS:
+            raise DrawCompleteError(number_of_draws=self.TOTAL_LUCKY_NUMBERS)
 
-        self.draw_random_number(self.lucky_numbers, NUMBER_LUCKY_NUMBERS)
+        self.draw_random_number(self.lucky_numbers, self.LUCKY_NUMBERS)
 
     def __repr__(self):
         return (

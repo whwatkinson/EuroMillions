@@ -17,20 +17,20 @@ class TestTicket:
         t = LuckDipTicket()
 
         test_main_numbers = t.get_main_numbers()
-        assert len(test_main_numbers) == 5
+        assert len(test_main_numbers) == t.TOTAL_MAIN_NUMBERS
 
         for number in test_main_numbers:
-            assert 0 < number < 51
+            assert 0 < number <= t.MAIN_NUMBERS
 
     def test_get_lucky_star_numbers(self):
 
         t = LuckDipTicket()
 
-        test_lucky_numbers = t.get_lucky_star_numbers()
-        assert len(test_lucky_numbers) == 2
+        test_lucky_numbers = t.get_lucky_numbers()
+        assert len(test_lucky_numbers) == t.TOTAL_LUCKY_NUMBERS
 
         for number in test_lucky_numbers:
-            assert 0 < number < 12
+            assert 0 < number <= t.LUCKY_NUMBERS
 
     @mark.parametrize(
         "number_of_tickets, ticket_cost, expected_cost",
