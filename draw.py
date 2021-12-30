@@ -2,8 +2,8 @@ from random import randint
 
 
 class DrawCompleteError(Exception):
-    def __init__(self):
-        self.message = "5 main numbers have already been drawn"
+    def __init__(self, number_of_draws):
+        self.message = f"{number_of_draws} main numbers have already been drawn"
         super().__init__(self.message)
 
 
@@ -23,7 +23,7 @@ class Draw:
     def draw_main_number(self):
 
         if len(self.main_numbers) == 5:
-            raise DrawCompleteError
+            raise DrawCompleteError(number_of_draws=5)
 
         drawing = True
 
@@ -37,8 +37,8 @@ class Draw:
 
     def draw_lucky_number(self):
 
-        if len(self.main_numbers) == 2:
-            raise DrawCompleteError
+        if len(self.lucky_numbers) == 2:
+            raise DrawCompleteError(number_of_draws=2)
 
         drawing = True
 
