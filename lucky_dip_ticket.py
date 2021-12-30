@@ -7,16 +7,15 @@ from numbers_base import NumbersBase
 
 class LuckDipTicket(NumbersBase):
     def __init__(self, ticket_cost: float = 2.5):
+        self.uuid = uuid4()
+        self.ticket_cost = ticket_cost
         self.main_numbers = self.get_main_numbers()
-        self.lucky_numbers = self.get_lucky_numbers()
-        self.winner = False
         self.main_matches_count = 0
         self.main_matches = self.clean_set()
+        self.lucky_numbers = self.get_lucky_numbers()
         self.lucky_matches_count = 0
         self.lucky_matches = self.clean_set()
-
-        self.ticket_cost = ticket_cost
-        self.uuid = uuid4()
+        self.winner = False
 
     def main_number_match_check(self, number_drawn: int) -> None:
         if number_drawn in self.main_numbers:
@@ -55,15 +54,6 @@ class LuckDipTicket(NumbersBase):
             f"main numbers:      {self.repr_formatter(self.main_numbers)}\n"
             f"lucky numbers:     {self.repr_formatter(self.lucky_numbers)}"
         )
-
-    def __eq__(self, other) -> int:
-        h1 = hash(f"{sorted(list(self.main_numbers))}") + hash(
-            f"{sorted(list(self.lucky_numbers))}"
-        )
-        h2 = hash(f"{sorted(list(other.main_numbers))}") + hash(
-            f"{sorted(list(other.lucky_numbers))}"
-        )
-        return h1 == h2
 
 
 class LuckDipTicketList:
