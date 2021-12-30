@@ -40,3 +40,15 @@ class TestTicket:
         tl = LuckDipTicketList(number_of_tickets, ticket_cost)
 
         assert tl.total_cost == expected_cost
+
+    def test_ticket_eq(self):
+
+        t1 = LuckDipTicket()
+        t2 = LuckDipTicket()
+
+        assert t1 != t2
+
+        t1.main_numbers = t2.main_numbers = {1, 2, 3, 4, 5}
+        t1.lucky_numbers = t2.lucky_numbers = {6, 7}
+
+        assert t1 == t2
