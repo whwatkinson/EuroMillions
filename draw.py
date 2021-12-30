@@ -64,3 +64,7 @@ class Draw:
             f"main numbers:      {self.repr_formatter(self.main_numbers)}\n"
             f"lucky numbers:     {self.repr_formatter(self.lucky_numbers)}"
         )
+
+    def __hash__(self):
+        return hash(f"{sorted(list(self.main_numbers))}") + hash(f"{sorted(list(self.lucky_numbers))}")
+

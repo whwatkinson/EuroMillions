@@ -1,9 +1,11 @@
 from random import randint
 from typing import Set
+from uuid import uuid4
 
 
 class LuckDipTicketList:
     def __init__(self, number_of_tickets: int = 5, ticket_cost: float = 2.5):
+        # Unique tickets?
         self.tickets = [LuckDipTicket(ticket_cost=ticket_cost) for _ in range(number_of_tickets)]
         self.total_cost = sum(ticket.ticket_cost for ticket in self.tickets)
 
@@ -20,6 +22,7 @@ class LuckDipTicket:
         self.winner = False
         self.matches = 0
         self.ticket_cost = ticket_cost
+        self.uuid = uuid4()
 
     @staticmethod
     def get_random_numbers(total_numbers: int, upper_bound: int):
@@ -39,3 +42,22 @@ class LuckDipTicket:
     def get_lucky_star_numbers(self) -> Set[int]:
         numbers = self.get_random_numbers(2, 12)
         return numbers
+
+    @staticmethod
+    def repr_formatter(numbers) -> str:
+        if not numbers:
+            return "{}"
+
+        else:
+            return numbers
+
+    def __repr__(self):
+        return (
+            f"uuid:              {self.uuid}\n"
+            f"main numbers:      {self.repr_formatter(self.main_numbers)}\n"
+            f"lucky numbers:     {self.repr_formatter(self.lucky_numbers)}"
+        )
+
+    def __hash__(self):
+
+        return hash(f"{sorted(list(self.main_numbers))}") + hash(f"{sorted(list(self.lucky_numbers))}")
