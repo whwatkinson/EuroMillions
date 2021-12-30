@@ -7,6 +7,7 @@ class LuckDipTicket:
         self.main_numbers = self.get_main_numbers()
         self.lucky_numbers = self.get_main_numbers()
         self.winner = False
+        self.matches = 0
 
     @staticmethod
     def get_random_numbers(total_numbers: int, upper_bound: int):
