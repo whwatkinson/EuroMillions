@@ -32,14 +32,17 @@ class TestTicket:
             assert 0 < number <= t.LUCKY_NUMBERS
 
     @mark.parametrize(
-        "number_of_tickets, ticket_cost, expected_cost",
-        [(5, 2.5, 12.5), (100, 2.5, 250)],
+        "number_of_tickets, ticket_cost, expected_cost, number_expected_tickets",
+        [(5, 2.5, 12.5, 5), (100, 2.5, 250, 100)],
     )
-    def test_lucky_dip_ticket_list(self, number_of_tickets, ticket_cost, expected_cost):
+    def test_lucky_dip_ticket_list(
+        self, number_of_tickets, ticket_cost, expected_cost, number_expected_tickets
+    ):
 
         tl = LuckDipTicketList(number_of_tickets, ticket_cost)
 
         assert tl.total_cost == expected_cost
+        assert len(tl.tickets) == number_expected_tickets
 
     def test_lucky_ticket_eq(self):
 
