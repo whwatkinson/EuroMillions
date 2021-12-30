@@ -56,5 +56,6 @@ class Draw(NumbersBase):
         )
 
     def __hash__(self):
-        return hash(f"{sorted(list(self.main_numbers))}") + hash(f"{sorted(list(self.lucky_numbers))}")
-
+        return hash(f"{sorted(list(self.main_numbers))}") + hash(
+            f"{sorted(list(self.lucky_numbers))}"
+        )

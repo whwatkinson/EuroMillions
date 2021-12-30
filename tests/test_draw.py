@@ -6,7 +6,6 @@ from draw import Draw, DrawCompleteError
 
 
 class TestDraw:
-
     @contextmanager
     def does_not_raise():
         yield
@@ -27,8 +26,8 @@ class TestDraw:
             ((5, 1), (5, 1), does_not_raise()),
             ((5, 2), (5, 2), does_not_raise()),
             ((6, 0), (5, 2), raises(DrawCompleteError)),
-            ((6, 3), (5, 2), raises(DrawCompleteError))
-        ]
+            ((6, 3), (5, 2), raises(DrawCompleteError)),
+        ],
     )
     def test_draw(self, draws, expected_totals, expectation):
         with expectation:
@@ -43,4 +42,3 @@ class TestDraw:
             for _ in range(lucky_draws):
                 d.draw_lucky_number()
             assert len(d.lucky_numbers) == exp_lucky_numbers
-

@@ -34,10 +34,7 @@ class TestTicket:
 
     @mark.parametrize(
         "number_of_tickets, ticket_cost, expected_cost",
-        [
-            (5, 2.5, 12.5),
-            (100, 2.5, 250)
-        ]
+        [(5, 2.5, 12.5), (100, 2.5, 250)],
     )
     def test_lucky_dip_ticket_list(self, number_of_tickets, ticket_cost, expected_cost):
 

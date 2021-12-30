@@ -1,5 +1,3 @@
-
-
 class NumbersBase:
     TOTAL_MAIN_NUMBERS = 5
     TOTAL_LUCKY_NUMBERS = 2
