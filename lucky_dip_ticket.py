@@ -10,22 +10,25 @@ class LuckDipTicket(NumbersBase):
         self.main_numbers = self.get_main_numbers()
         self.lucky_numbers = self.get_lucky_numbers()
         self.winner = False
-        self.matches_count = 0
-        self.matches = self.clean_set()
+        self.main_matches_count = 0
+        self.main_matches = self.clean_set()
+        self.lucky_matches_count = 0
+        self.lucky_matches = self.clean_set()
+
         self.ticket_cost = ticket_cost
         self.uuid = uuid4()
 
-    def match_check(self, number_drawn: int, numbers: Set[int]) -> None:
-        if number_drawn in numbers:
-            self.matches_count += 1
-            self.matches.add(number_drawn)
+    def main_number_match_check(self, number_drawn: int) -> None:
+        if number_drawn in self.main_numbers:
+            self.main_matches_count += 1
+            self.main_matches.add(number_drawn)
             self.winner = True
 
-    def main_number_match_check(self, number_drawn: int):
-        self.match_check(number_drawn, self.main_numbers)
-
-    def lucky_number_match_check(self, number_drawn: int):
-        self.match_check(number_drawn, self.lucky_numbers)
+    def lucky_number_match_check(self, number_drawn: int) -> None:
+        if number_drawn in self.lucky_numbers:
+            self.lucky_matches_count += 1
+            self.lucky_matches.add(number_drawn)
+            self.winner = True
 
     @staticmethod
     def get_random_numbers(total_numbers: int, upper_bound: int) -> Set[int]:
