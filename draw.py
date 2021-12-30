@@ -1,4 +1,13 @@
+from typing import Set
 from random import randint
+
+from numbers_base import NumbersBase
+
+
+MAIN_NUMBERS = 5
+LUCKY_NUMBERS = 2
+NUMBER_MAIN_NUMBERS = 50
+NUMBER_LUCKY_NUMBERS = 12
 
 
 class DrawCompleteError(Exception):
@@ -7,56 +16,44 @@ class DrawCompleteError(Exception):
         super().__init__(self.message)
 
 
-class Draw:
+class Draw(NumbersBase):
     def __init__(self, total_prize_money: int = 1000000):
         self.total_prize_money = total_prize_money
         self.main_numbers = self.new_draw(numbers_drawn=None)
         self.lucky_numbers = self.new_draw(numbers_drawn=None)
 
     @staticmethod
-    def new_draw(numbers_drawn):
+    def new_draw(numbers_drawn) -> Set[int]:
         if not numbers_drawn:
             return set()
         else:
             return numbers_drawn
 
-    def draw_main_number(self):
-
-        if len(self.main_numbers) == 5:
-            raise DrawCompleteError(number_of_draws=5)
-
+    @staticmethod
+    def draw_random_number(numbers: Set[int], upper_bound: int):
         drawing = True
-
         while drawing:
-            number = randint(1, 50)
-            if number in self.main_numbers:
+            number = randint(1, upper_bound)
+            if number in numbers:
                 continue
             else:
-                self.main_numbers.add(number)
+                numbers.add(number)
                 drawing = False
+        return numbers
+
+    def draw_main_number(self):
+
+        if len(self.main_numbers) == MAIN_NUMBERS:
+            raise DrawCompleteError(number_of_draws=MAIN_NUMBERS)
+
+        self.draw_random_number(self.main_numbers, NUMBER_MAIN_NUMBERS)
 
     def draw_lucky_number(self):
 
-        if len(self.lucky_numbers) == 2:
-            raise DrawCompleteError(number_of_draws=2)
+        if len(self.lucky_numbers) == LUCKY_NUMBERS:
+            raise DrawCompleteError(number_of_draws=LUCKY_NUMBERS)
 
-        drawing = True
-
-        while drawing:
-            number = randint(1, 12)
-            if number in self.main_numbers:
-                continue
-            else:
-                self.lucky_numbers.add(number)
-                drawing = False
-
-    @staticmethod
-    def repr_formatter(numbers) -> str:
-        if not numbers:
-            return "{}"
-
-        else:
-            return numbers
+        self.draw_random_number(self.lucky_numbers, NUMBER_LUCKY_NUMBERS)
 
     def __repr__(self):
         return (

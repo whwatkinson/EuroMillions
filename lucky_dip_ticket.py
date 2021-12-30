@@ -2,6 +2,9 @@ from random import randint
 from typing import Set
 from uuid import uuid4
 
+from draw import MAIN_NUMBERS, LUCKY_NUMBERS, NUMBER_MAIN_NUMBERS, NUMBER_LUCKY_NUMBERS
+from numbers_base import NumbersBase
+
 
 class LuckDipTicketList:
     def __init__(self, number_of_tickets: int = 5, ticket_cost: float = 2.5):
@@ -15,7 +18,7 @@ class LuckDipTicketList:
         )
 
 
-class LuckDipTicket:
+class LuckDipTicket(NumbersBase):
     def __init__(self, ticket_cost: float = 2.5):
         self.main_numbers = self.get_main_numbers()
         self.lucky_numbers = self.get_lucky_star_numbers()
@@ -36,20 +39,12 @@ class LuckDipTicket:
         return numbers
 
     def get_main_numbers(self) -> Set[int]:
-        numbers = self.get_random_numbers(5, 50)
+        numbers = self.get_random_numbers(MAIN_NUMBERS, NUMBER_MAIN_NUMBERS)
         return numbers
 
     def get_lucky_star_numbers(self) -> Set[int]:
-        numbers = self.get_random_numbers(2, 12)
+        numbers = self.get_random_numbers(LUCKY_NUMBERS, NUMBER_LUCKY_NUMBERS)
         return numbers
-
-    @staticmethod
-    def repr_formatter(numbers) -> str:
-        if not numbers:
-            return "{}"
-
-        else:
-            return numbers
 
     def __repr__(self):
         return (
@@ -59,5 +54,4 @@ class LuckDipTicket:
         )
 
     def __hash__(self):
-
         return hash(f"{sorted(list(self.main_numbers))}") + hash(f"{sorted(list(self.lucky_numbers))}")
