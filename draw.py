@@ -14,21 +14,9 @@ class DrawCompleteError(Exception):
 class Draw(NumbersBase):
     def __init__(self, total_prize_money: int = 1000000):
         self.total_prize_money = total_prize_money
-        self.main_numbers = self.draw_check(numbers_drawn=None)
-        self.lucky_numbers = self.draw_check(numbers_drawn=None)
+        self.main_numbers = self.clean_set()
+        self.lucky_numbers = self.clean_set()
         self.uuid = uuid4()
-
-    @staticmethod
-    def draw_check(numbers_drawn) -> Set[int]:
-        """
-        To create a new draw as sets are mutable and we want to add incrementally
-        :param numbers_drawn:
-        :return: A new set
-        """
-        if not numbers_drawn:
-            return set()
-        else:
-            return numbers_drawn
 
     @staticmethod
     def draw_random_number(numbers: Set[int], upper_bound: int):
@@ -42,28 +30,32 @@ class Draw(NumbersBase):
                 numbers.add(number)
                 drawing = False
 
-    def draw_main_number(self):
+    def draw_main_number(self) -> None:
 
         if len(self.main_numbers) == self.TOTAL_MAIN_NUMBERS:
             raise DrawCompleteError(number_of_draws=self.TOTAL_MAIN_NUMBERS)
 
         self.draw_random_number(self.main_numbers, self.MAIN_NUMBERS)
 
-    def draw_lucky_number(self):
+    def draw_lucky_number(self) -> None:
 
         if len(self.lucky_numbers) == self.TOTAL_LUCKY_NUMBERS:
             raise DrawCompleteError(number_of_draws=self.TOTAL_LUCKY_NUMBERS)
 
         self.draw_random_number(self.lucky_numbers, self.LUCKY_NUMBERS)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (
             f"total prize money: {self.total_prize_money}\n"
             f"main numbers:      {self.repr_formatter(self.main_numbers)}\n"
             f"lucky numbers:     {self.repr_formatter(self.lucky_numbers)}"
         )
 
-    def __hash__(self):
-        return hash(f"{sorted(list(self.main_numbers))}") + hash(
+    def __eq__(self, other) -> int:
+        h1 = hash(f"{sorted(list(self.main_numbers))}") + hash(
             f"{sorted(list(self.lucky_numbers))}"
         )
+        h2 = hash(f"{sorted(list(other.main_numbers))}") + hash(
+            f"{sorted(list(other.lucky_numbers))}"
+        )
+        return h1 == h2

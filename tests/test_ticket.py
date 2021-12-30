@@ -1,3 +1,5 @@
+from typing import Set
+
 from pytest import mark
 
 from lucky_dip_ticket import LuckDipTicket, LuckDipTicketList
@@ -9,7 +11,8 @@ class TestTicket:
         t = LuckDipTicket()
 
         assert t.winner is False
-        assert t.matches == 0
+        assert t.matches_count == 0
+        assert len(t.matches) == 0
 
     def test_get_main_numbers(self):
 
@@ -36,7 +39,11 @@ class TestTicket:
         [(5, 2.5, 12.5, 5), (100, 2.5, 250, 100)],
     )
     def test_lucky_dip_ticket_list(
-        self, number_of_tickets, ticket_cost, expected_cost, number_expected_tickets
+        self,
+        number_of_tickets: int,
+        ticket_cost: float,
+        expected_cost: float,
+        number_expected_tickets: int,
     ):
 
         tl = LuckDipTicketList(number_of_tickets, ticket_cost)
@@ -55,3 +62,36 @@ class TestTicket:
         t1.lucky_numbers = t2.lucky_numbers = {6, 7}
 
         assert t1 == t2
+
+    @mark.parametrize(
+        "main_numbers, lucky_numbers, number_drawn, lucky, expected_matches_count, expected_matches, expected_winner",
+        [
+            ({1, 2, 3, 4, 5}, {6, 7}, 1, False, 1, {1}, True),
+            ({34, 5, 41, 42, 18}, {6, 7}, 1, False, 0, set(), False),
+            ({2, 37, 8, 46, 14}, {9, 10}, 10, True, 1, {10}, True),
+            ({34, 10, 47, 50, 25}, {11, 3}, 2, True, 0, set(), False),
+        ],
+    )
+    def test_match_check(
+        self,
+        main_numbers: Set[int],
+        lucky_numbers: Set[int],
+        number_drawn: int,
+        lucky: bool,
+        expected_matches_count: int,
+        expected_matches: Set[int],
+        expected_winner: bool,
+    ):
+
+        test_ticket = LuckDipTicket()
+        test_ticket.main_numbers = main_numbers
+        test_ticket.lucky_numbers = lucky_numbers
+
+        if lucky:
+            test_ticket.lucky_number_match_check(number_drawn)
+        else:
+            test_ticket.main_number_match_check(number_drawn)
+
+        assert test_ticket.matches_count == expected_matches_count
+        assert test_ticket.matches == expected_matches
+        assert test_ticket.winner == expected_winner

@@ -10,12 +10,25 @@ class LuckDipTicket(NumbersBase):
         self.main_numbers = self.get_main_numbers()
         self.lucky_numbers = self.get_lucky_numbers()
         self.winner = False
-        self.matches = 0
+        self.matches_count = 0
+        self.matches = self.clean_set()
         self.ticket_cost = ticket_cost
         self.uuid = uuid4()
 
+    def match_check(self, number_drawn: int, numbers: Set[int]) -> None:
+        if number_drawn in numbers:
+            self.matches_count += 1
+            self.matches.add(number_drawn)
+            self.winner = True
+
+    def main_number_match_check(self, number_drawn: int):
+        self.match_check(number_drawn, self.main_numbers)
+
+    def lucky_number_match_check(self, number_drawn: int):
+        self.match_check(number_drawn, self.lucky_numbers)
+
     @staticmethod
-    def get_random_numbers(total_numbers: int, upper_bound: int):
+    def get_random_numbers(total_numbers: int, upper_bound: int) -> Set[int]:
         numbers = set()
         while len(numbers) != total_numbers:
             number = randint(1, upper_bound)
@@ -33,14 +46,14 @@ class LuckDipTicket(NumbersBase):
         numbers = self.get_random_numbers(self.TOTAL_LUCKY_NUMBERS, self.LUCKY_NUMBERS)
         return numbers
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (
             f"uuid:              {self.uuid}\n"
             f"main numbers:      {self.repr_formatter(self.main_numbers)}\n"
             f"lucky numbers:     {self.repr_formatter(self.lucky_numbers)}"
         )
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> int:
         h1 = hash(f"{sorted(list(self.main_numbers))}") + hash(
             f"{sorted(list(self.lucky_numbers))}"
         )
