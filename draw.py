@@ -1,5 +1,6 @@
 from random import randint
 from typing import Set
+from uuid import uuid4
 
 from numbers_base import NumbersBase
 
@@ -13,11 +14,17 @@ class DrawCompleteError(Exception):
 class Draw(NumbersBase):
     def __init__(self, total_prize_money: int = 1000000):
         self.total_prize_money = total_prize_money
-        self.main_numbers = self.new_draw(numbers_drawn=None)
-        self.lucky_numbers = self.new_draw(numbers_drawn=None)
+        self.main_numbers = self.draw_check(numbers_drawn=None)
+        self.lucky_numbers = self.draw_check(numbers_drawn=None)
+        self.uuid = uuid4()
 
     @staticmethod
-    def new_draw(numbers_drawn) -> Set[int]:
+    def draw_check(numbers_drawn) -> Set[int]:
+        """
+        To create a new draw as sets are mutable and we want to add incrementally
+        :param numbers_drawn:
+        :return: A new set
+        """
         if not numbers_drawn:
             return set()
         else:
