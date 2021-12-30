@@ -1,6 +1,5 @@
 from pytest import mark
 
-
 from lucky_dip_ticket import LuckDipTicket, LuckDipTicketList
 
 

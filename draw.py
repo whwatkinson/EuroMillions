@@ -1,5 +1,5 @@
-from typing import Set
 from random import randint
+from typing import Set
 
 from numbers_base import NumbersBase
 
@@ -26,6 +26,7 @@ class Draw(NumbersBase):
     @staticmethod
     def draw_random_number(numbers: Set[int], upper_bound: int):
         drawing = True
+        # could be done with randon and choice?
         while drawing:
             number = randint(1, upper_bound)
             if number in numbers:
