@@ -41,7 +41,7 @@ class TestTicket:
 
         assert tl.total_cost == expected_cost
 
-    def test_ticket_eq(self):
+    def test_lucky_ticket_eq(self):
 
         t1 = LuckDipTicket()
         t2 = LuckDipTicket()
