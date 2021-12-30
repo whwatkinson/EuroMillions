@@ -1,1 +1,1 @@
-# EuroMillions
+# EuroMillionsSimulator
