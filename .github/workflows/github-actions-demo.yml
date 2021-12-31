@@ -15,8 +15,8 @@ jobs:
 #        run: |
 #          ls ${{ github.workspace }}
 #      - run: echo "🍏 This job's status is ${{ job.status }}."
-
-
+#
+#
 #      - name: Add PWD to pythonpath
 #        run: |
 #          echo 'PYTHONPATH<<EOF' >> $GITHUB_ENV
@@ -24,7 +24,7 @@ jobs:
 #          echo 'EOF' >> $GITHUB_ENV
 
       - name: run pytest
-        - run: |
+        run: |
             - pip install pytest
             - pytest .
 
