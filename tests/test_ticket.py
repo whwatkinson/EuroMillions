@@ -100,3 +100,26 @@ class TestTicket:
             assert test_ticket.main_matches_count == expected_matches_count
 
         assert test_ticket.winner == expected_winner
+
+    def test_number_match_count(self):
+
+        test_ticket = LuckDipTicket()
+        test_ticket.main_numbers = {1, 2, 3, 4, 5}
+        test_ticket.lucky_numbers = {6, 7}
+
+        assert test_ticket.has_all_main_numbers is False
+        assert test_ticket.has_both_lucky_numbers is False
+
+        for i, _ in enumerate(test_ticket.main_numbers, 1):
+
+            test_ticket.main_number_match_check(i)
+
+        assert test_ticket.main_matches_count == test_ticket.TOTAL_MAIN_NUMBERS
+        assert test_ticket.has_all_main_numbers is True
+
+        for i, _ in enumerate(test_ticket.lucky_numbers, 6):
+
+            test_ticket.lucky_number_match_check(i)
+
+        assert test_ticket.lucky_matches_count == test_ticket.TOTAL_LUCKY_NUMBERS
+        assert test_ticket.has_both_lucky_numbers is True

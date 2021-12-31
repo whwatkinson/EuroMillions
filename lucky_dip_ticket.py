@@ -16,6 +16,7 @@ class LuckDipTicket(NumbersBase):
         self.lucky_matches_count = 0
         self.lucky_matches = self.clean_set()
         self.winner = False
+        self.has_all_main_numbers = False
         self.has_both_lucky_numbers = False
 
     def main_number_match_check(self, number_drawn: int) -> None:
@@ -29,9 +30,8 @@ class LuckDipTicket(NumbersBase):
             self.main_matches.add(number_drawn)
             self.winner = True
 
-            if self.main_matches_count == 5:
-                # TODO some logic here
-                pass
+            if self.main_matches_count == self.TOTAL_MAIN_NUMBERS:
+                self.has_all_main_numbers = True
 
     def lucky_number_match_check(self, number_drawn: int) -> None:
         """
@@ -44,8 +44,7 @@ class LuckDipTicket(NumbersBase):
             self.lucky_matches.add(number_drawn)
             self.winner = True
 
-            if self.lucky_matches_count == 0:
-                # TODO needs a test
+            if self.lucky_matches_count == self.TOTAL_LUCKY_NUMBERS:
                 self.has_both_lucky_numbers = True
 
     @staticmethod

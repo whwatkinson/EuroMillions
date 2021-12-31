@@ -21,7 +21,8 @@ class Draw(NumbersBase):
     @staticmethod
     def draw_random_number(numbers: Set[int], upper_bound: int):
         drawing = True
-        # could be done with randon and choice?
+        # could be done with random0 and choice?
+        # would remove the while loops
         while drawing:
             number = randint(1, upper_bound)
             if number in numbers:
@@ -31,22 +32,41 @@ class Draw(NumbersBase):
                 drawing = False
 
     def draw_main_number(self) -> None:
-
+        """
+        Draws one main number
+        :return: A random main number
+        """
         if len(self.main_numbers) == self.TOTAL_MAIN_NUMBERS:
             raise DrawCompleteError(number_of_draws=self.TOTAL_MAIN_NUMBERS)
 
         self.draw_random_number(self.main_numbers, self.MAIN_NUMBERS)
 
     def draw_lucky_number(self) -> None:
+        """
+        Draws one lucky number
+        :return: A random lucky number
+        """
 
         if len(self.lucky_numbers) == self.TOTAL_LUCKY_NUMBERS:
             raise DrawCompleteError(number_of_draws=self.TOTAL_LUCKY_NUMBERS)
 
         self.draw_random_number(self.lucky_numbers, self.LUCKY_NUMBERS)
 
+    def auto_draw_all(self) -> None:
+        """
+        Auto runs the draw
+        :return: A full complement of main and lucky numbers
+        """
+
+        for _ in range(self.TOTAL_MAIN_NUMBERS):
+            self.draw_main_number()
+
+        for _ in range(self.TOTAL_LUCKY_NUMBERS):
+            self.draw_lucky_number()
+
     def __repr__(self) -> str:
         return (
-            f"total prize money: {self.total_prize_money}\n"
-            f"main numbers:      {self.repr_formatter(self.main_numbers)}\n"
-            f"lucky numbers:     {self.repr_formatter(self.lucky_numbers)}"
+            f"total prize money:  £{self.total_prize_money}\n"
+            f"main numbers:       {self.repr_formatter(self.main_numbers)}\n"
+            f"lucky numbers:      {self.repr_formatter(self.lucky_numbers)}"
         )
