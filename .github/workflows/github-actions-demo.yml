@@ -26,8 +26,7 @@ jobs:
       - name: run pytest
         run: |
             pip install pytest
-            export PYTHONPATH=$(pwd)
-            pytest .
+            python -m pytest
 
       - name: run black
         run: |
