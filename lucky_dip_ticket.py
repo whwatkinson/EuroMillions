@@ -44,9 +44,6 @@ class LuckDipTicket(NumbersBase):
             self.lucky_matches.add(number_drawn)
             self.winner = True
 
-
-
-
             if self.lucky_matches_count == self.TOTAL_LUCKY_NUMBERS:
                 self.has_both_lucky_numbers = True
 
