@@ -18,6 +18,7 @@ class LuckDipTicket(NumbersBase):
         self.winner = False
         self.has_all_main_numbers = False
         self.has_both_lucky_numbers = False
+        self.prize = 0
 
     def main_number_match_check(self, number_drawn: int) -> None:
         """
@@ -132,7 +133,7 @@ class LuckDipTicketList:
 
             return tickets_list
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (
             f"lucky dip tickets: {len(self.tickets)}\n"
             f"duplicate tickets: {self.duplicate_tickets}"
