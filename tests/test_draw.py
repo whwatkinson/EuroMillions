@@ -42,3 +42,12 @@ class TestDraw:
             for _ in range(lucky_draws):
                 d.draw_lucky_number()
             assert len(d.lucky_numbers) == exp_lucky_numbers
+
+    def test_auto_draw(self):
+
+        d = Draw()
+
+        d.auto_draw_all()
+
+        assert len(d.main_numbers) == d.TOTAL_MAIN_NUMBERS
+        assert len(d.lucky_numbers) == d.TOTAL_LUCKY_NUMBERS
