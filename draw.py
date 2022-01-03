@@ -1,6 +1,6 @@
 from random import randint
 from typing import Set
-from uuid import uuid4
+from uuid import uuid4, UUID
 
 from numbers_base import NumbersBase
 
@@ -13,10 +13,10 @@ class DrawCompleteError(Exception):
 
 class Draw(NumbersBase):
     def __init__(self, total_prize_money: int = 1000000):
-        self.total_prize_money = total_prize_money
-        self.main_numbers = self.clean_set()
-        self.lucky_numbers = self.clean_set()
-        self.uuid = uuid4()
+        self.uuid: UUID = uuid4()
+        self.total_prize_money: int = total_prize_money
+        self.main_numbers: Set[int] = self.clean_set()
+        self.lucky_numbers: Set[int] = self.clean_set()
 
     @staticmethod
     def draw_random_number(numbers: Set[int], upper_bound: int):

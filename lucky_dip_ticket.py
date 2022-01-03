@@ -1,24 +1,50 @@
 from random import randint
-from typing import List, Set
-from uuid import uuid4
+from typing import List, Set, Tuple
+from uuid import uuid4, UUID
+
+
+from pydantic import BaseModel, validator
+
 
 from numbers_base import NumbersBase
 
 
+class ExportTicket(BaseModel):
+    uuid: UUID
+    ticket_cost: float
+    main_numbers: Set[int]
+    main_matches_count: int
+    main_matches: Set[int]
+    lucky_numbers: Set[int]
+    lucky_matches_count: int
+    lucky_matches: Set[int]
+    winner: bool
+    has_all_main_numbers: bool
+    has_both_lucky_numbers: bool
+    prize: int
+
+    # @validator('main_numbers', 'main_matches', 'lucky_numbers', 'lucky_matches')
+    # def set_to_tuple(cls, value):
+    #
+    #     if type(value) is set:
+    #         return tuple(value)
+
+
 class LuckDipTicket(NumbersBase):
+    # could use a data class?
     def __init__(self, ticket_cost: float = 2.5):
-        self.uuid = uuid4()
-        self.ticket_cost = ticket_cost
-        self.main_numbers = self.get_main_numbers()
-        self.main_matches_count = 0
-        self.main_matches = self.clean_set()
-        self.lucky_numbers = self.get_lucky_numbers()
-        self.lucky_matches_count = 0
-        self.lucky_matches = self.clean_set()
-        self.winner = False
-        self.has_all_main_numbers = False
-        self.has_both_lucky_numbers = False
-        self.prize = 0
+        self.uuid: UUID = uuid4()
+        self.ticket_cost: float = ticket_cost
+        self.main_numbers: Set[int] = self.get_main_numbers()
+        self.main_matches_coun: int = 0
+        self.main_matches: Set[int] = self.clean_set()
+        self.lucky_numbers: Set[int] = self.get_lucky_numbers()
+        self.lucky_matches_count: int = 0
+        self.lucky_matches: Set[int] = self.clean_set()
+        self.winner: bool = False
+        self.has_all_main_numbers: bool = False
+        self.has_both_lucky_numbers: bool = False
+        self.prize: float = 0
 
     def main_number_match_check(self, number_drawn: int) -> None:
         """
@@ -80,6 +106,10 @@ class LuckDipTicket(NumbersBase):
         """
         numbers = self.get_random_numbers(self.TOTAL_LUCKY_NUMBERS, self.LUCKY_NUMBERS)
         return numbers
+
+    def prepare_ticket_for_export(self) -> dict:
+        export_ticket = ExportTicket(**self.__dict__)
+        return export_ticket
 
     def __repr__(self) -> str:
         return (

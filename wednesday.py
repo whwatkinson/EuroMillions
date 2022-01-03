@@ -17,21 +17,19 @@ class Wednesday:
         self.draw_checked = False
         self.time_checked = None
 
-    def check_results(self):
+    def check_results(self) -> None:
 
         if not self.draw_checked:
 
             for ticket in self.tickets.tickets:
-
                 draw_main_numbers = self.draw.main_numbers
 
                 for m_number in draw_main_numbers:
-
                     ticket.main_number_match_check(m_number)
 
                 for l_number in self.draw.lucky_numbers:
-
                     ticket.lucky_number_match_check(l_number)
+
             self.time_checked = datetime.now()
             self.draw_checked = True
         else:
@@ -48,3 +46,10 @@ class Wednesday:
         )
 
         return winners_sorted
+
+
+if __name__ == "__main__":
+    ticket_list = LuckDipTicketList(number_of_tickets=1000)
+    draw = Draw()
+    draw.auto_draw_all()
+    w = Wednesday(draw, ticket_list)

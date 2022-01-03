@@ -5,7 +5,7 @@ from pytest import mark
 from lucky_dip_ticket import LuckDipTicket, LuckDipTicketList
 
 
-class TestTicket:
+class TestLuckyDipTicket:
     def test_new_ticket(self):
 
         t = LuckDipTicket()
@@ -123,3 +123,16 @@ class TestTicket:
 
         assert test_ticket.lucky_matches_count == test_ticket.TOTAL_LUCKY_NUMBERS
         assert test_ticket.has_both_lucky_numbers is True
+
+    def test_prepare_ticket_for_export(self):
+
+        test_ticket = LuckDipTicket()
+        test_ticket.main_numbers = {1, 2, 3, 4, 5}
+        test_ticket.lucky_numbers = {6, 7}
+        test_ticket.winner = True
+
+        test_export = test_ticket.prepare_ticket_for_export()
+
+        assert test_export["main_numbers"] == {1, 2, 3, 4, 5}
+        assert test_export["lucky_numbers"] == {6, 7}
+        assert test_export["winner"] is True
