@@ -2,9 +2,7 @@ from random import randint
 from typing import List, Set, Tuple
 from uuid import uuid4, UUID
 
-
 from pydantic import BaseModel, validator
-
 
 from numbers_base import NumbersBase
 
@@ -21,13 +19,8 @@ class ExportTicket(BaseModel):
     winner: bool
     has_all_main_numbers: bool
     has_both_lucky_numbers: bool
+    total_matches: int
     prize: int
-
-    # @validator('main_numbers', 'main_matches', 'lucky_numbers', 'lucky_matches')
-    # def set_to_tuple(cls, value):
-    #
-    #     if type(value) is set:
-    #         return tuple(value)
 
 
 class LuckDipTicket(NumbersBase):
@@ -45,6 +38,10 @@ class LuckDipTicket(NumbersBase):
         self.has_all_main_numbers: bool = False
         self.has_both_lucky_numbers: bool = False
         self.prize: float = 0
+
+    @property
+    def total_matches(self):
+        return self.main_matches_count + self.lucky_matches_count
 
     def main_number_match_check(self, number_drawn: int) -> None:
         """
@@ -108,7 +105,10 @@ class LuckDipTicket(NumbersBase):
         return numbers
 
     def prepare_ticket_for_export(self) -> ExportTicket:
-        export_ticket = ExportTicket(**self.__dict__)
+        # TODO fix ughh kludge...
+        d = self.__dict__
+        d["total_matches"] = self.total_matches
+        export_ticket = ExportTicket(**d)
         return export_ticket
 
     def __repr__(self) -> str:

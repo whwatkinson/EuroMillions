@@ -42,7 +42,11 @@ class Wednesday:
 
         winners_sorted = sorted(
             winners,
-            key=lambda x: (x.main_matches_count, x.lucky_matches_count),
+            key=lambda x: (
+                x.main_matches_count,
+                x.total_matches,
+                x.lucky_matches_count,
+            ),
             reverse=True,
         )
 

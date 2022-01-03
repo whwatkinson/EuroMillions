@@ -1,3 +1,4 @@
+from datetime import datetime
 from random import randint
 from typing import Set, Union
 from uuid import uuid4, UUID
@@ -20,6 +21,7 @@ class PrizeMoneyIncorrect(Exception):
 class Draw(NumbersBase):
     def __init__(self, total_prize_money: Union[float, int] = 1000000.00):
         self.uuid: UUID = uuid4()
+        self.draw_date = datetime.now().date()
         self.total_prize_money: float = self.parse_prize_money(total_prize_money)
         self.main_numbers: Set[int] = self.clean_set()
         self.lucky_numbers: Set[int] = self.clean_set()
@@ -27,8 +29,7 @@ class Draw(NumbersBase):
     @staticmethod
     def parse_prize_money(total_prize_money: Union[float, int]) -> float:
         try:
-            prize = float(total_prize_money)
-            return prize
+            return float(total_prize_money)
         except ValueError:
             raise PrizeMoneyIncorrect(total_prize_money=total_prize_money)
 
