@@ -1,5 +1,5 @@
 from random import randint
-from typing import Set
+from typing import Set, Union
 from uuid import uuid4, UUID
 
 from numbers_base import NumbersBase
@@ -11,12 +11,26 @@ class DrawCompleteError(Exception):
         super().__init__(self.message)
 
 
+class PrizeMoneyIncorrect(Exception):
+    def __init__(self, total_prize_money):
+        self.message = f"{total_prize_money} is in the incorrect format"
+        super().__init__(self.message)
+
+
 class Draw(NumbersBase):
-    def __init__(self, total_prize_money: float = 1000000):
+    def __init__(self, total_prize_money: Union[float, int] = 1000000.00):
         self.uuid: UUID = uuid4()
-        self.total_prize_money: float = total_prize_money
+        self.total_prize_money: float = self.parse_prize_money(total_prize_money)
         self.main_numbers: Set[int] = self.clean_set()
         self.lucky_numbers: Set[int] = self.clean_set()
+
+    @staticmethod
+    def parse_prize_money(total_prize_money: Union[float, int]) -> float:
+        try:
+            prize = float(total_prize_money)
+            return prize
+        except ValueError:
+            raise PrizeMoneyIncorrect(total_prize_money=total_prize_money)
 
     @staticmethod
     def draw_random_number(numbers: Set[int], upper_bound: int):

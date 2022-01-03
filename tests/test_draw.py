@@ -14,7 +14,7 @@ class TestDraw:
     @mark.parametrize(
         "total_prize_money, expected_total_prize_money",
         [
-            (5000.00, 5000.00),
+            (5000, 5000.00),
             (1000000.00, 1000000.00),
         ],
     )
