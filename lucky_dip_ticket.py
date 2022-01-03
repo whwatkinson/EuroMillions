@@ -107,7 +107,7 @@ class LuckDipTicket(NumbersBase):
         numbers = self.get_random_numbers(self.TOTAL_LUCKY_NUMBERS, self.LUCKY_NUMBERS)
         return numbers
 
-    def prepare_ticket_for_export(self) -> dict:
+    def prepare_ticket_for_export(self) -> ExportTicket:
         export_ticket = ExportTicket(**self.__dict__)
         return export_ticket
 

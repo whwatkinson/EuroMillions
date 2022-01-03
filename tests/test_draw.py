@@ -7,6 +7,7 @@ from draw import Draw, DrawCompleteError
 
 
 class TestDraw:
+
     @contextmanager
     def does_not_raise():
         yield
