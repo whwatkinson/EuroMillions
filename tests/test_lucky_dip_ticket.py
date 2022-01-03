@@ -1,4 +1,4 @@
-from typing import Set
+from typing import Set, Tuple
 
 from pytest import mark
 

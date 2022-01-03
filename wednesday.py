@@ -7,7 +7,7 @@ from lucky_dip_ticket import LuckDipTicketList
 
 class ResultsAlreadyCheckedError(Exception):
     def __init__(self, time_checked: datetime):
-        self.message = f"results where checked at: {time_checked}"
+        self.message: str = f"results where checked at: {time_checked}"
         super().__init__(self.message)
 
 

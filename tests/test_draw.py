@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from typing import Tuple
 
 from pytest import mark, raises
 
@@ -29,7 +30,7 @@ class TestDraw:
             ((6, 3), (5, 2), raises(DrawCompleteError)),
         ],
     )
-    def test_draw(self, draws, expected_totals, expectation):
+    def test_draw(self, draws: Tuple[int], expected_totals: Tuple[int], expectation):
         with expectation:
             d = Draw()
             exp_main_numbers, exp_lucky_numbers = expected_totals
