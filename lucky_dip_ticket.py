@@ -36,7 +36,7 @@ class LuckDipTicket(NumbersBase):
         self.uuid: UUID = uuid4()
         self.ticket_cost: float = ticket_cost
         self.main_numbers: Set[int] = self.get_main_numbers()
-        self.main_matches_coun: int = 0
+        self.main_matches_count: int = 0
         self.main_matches: Set[int] = self.clean_set()
         self.lucky_numbers: Set[int] = self.get_lucky_numbers()
         self.lucky_matches_count: int = 0
