@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from typing import Tuple
 
 from pytest import mark, raises
 
@@ -10,12 +11,22 @@ class TestDraw:
     def does_not_raise():
         yield
 
-    def test_new_draw(self):
+    @mark.parametrize(
+        "total_prize_money, expected_total_prize_money",
+        [
+            (5000, 5000.00),
+            (1000000.00, 1000000.00),
+        ],
+    )
+    def test_new_draw(
+        self, total_prize_money: float, expected_total_prize_money: float
+    ):
 
-        d = Draw()
+        d = Draw(total_prize_money=total_prize_money)
 
         assert len(d.main_numbers) == 0
         assert len(d.lucky_numbers) == 0
+        assert d.total_prize_money == expected_total_prize_money
 
     @mark.parametrize(
         "draws, expected_totals, expectation",
@@ -29,7 +40,7 @@ class TestDraw:
             ((6, 3), (5, 2), raises(DrawCompleteError)),
         ],
     )
-    def test_draw(self, draws, expected_totals, expectation):
+    def test_draw(self, draws: Tuple[int], expected_totals: Tuple[int], expectation):
         with expectation:
             d = Draw()
             exp_main_numbers, exp_lucky_numbers = expected_totals
