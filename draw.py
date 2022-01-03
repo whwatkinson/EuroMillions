@@ -12,9 +12,9 @@ class DrawCompleteError(Exception):
 
 
 class Draw(NumbersBase):
-    def __init__(self, total_prize_money: int = 1000000):
+    def __init__(self, total_prize_money: float = 1000000):
         self.uuid: UUID = uuid4()
-        self.total_prize_money: int = total_prize_money
+        self.total_prize_money: float = total_prize_money
         self.main_numbers: Set[int] = self.clean_set()
         self.lucky_numbers: Set[int] = self.clean_set()
 

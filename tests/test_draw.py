@@ -7,17 +7,26 @@ from draw import Draw, DrawCompleteError
 
 
 class TestDraw:
-
     @contextmanager
     def does_not_raise():
         yield
 
-    def test_new_draw(self):
+    @mark.parametrize(
+        "total_prize_money, expected_total_prize_money",
+        [
+            (5000.00, 5000.00),
+            (1000000.00, 1000000.00),
+        ],
+    )
+    def test_new_draw(
+        self, total_prize_money: float, expected_total_prize_money: float
+    ):
 
-        d = Draw()
+        d = Draw(total_prize_money=total_prize_money)
 
         assert len(d.main_numbers) == 0
         assert len(d.lucky_numbers) == 0
+        assert d.total_prize_money == expected_total_prize_money
 
     @mark.parametrize(
         "draws, expected_totals, expectation",
