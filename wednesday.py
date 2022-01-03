@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 from draw import Draw
 from lucky_dip_ticket import LuckDipTicketList
@@ -12,10 +13,10 @@ class ResultsAlreadyCheckedError(Exception):
 
 class Wednesday:
     def __init__(self, draw: Draw, tickets: LuckDipTicketList):
-        self.draw = draw
-        self.tickets = tickets
-        self.draw_checked = False
-        self.time_checked = None
+        self.draw: Draw = draw
+        self.tickets: LuckDipTicketList = tickets
+        self.draw_checked: bool = False
+        self.time_checked: Optional[datetime] = None
 
     def check_results(self) -> None:
 
@@ -50,6 +51,6 @@ class Wednesday:
 
 if __name__ == "__main__":
     ticket_list = LuckDipTicketList(number_of_tickets=1000)
-    draw = Draw()
-    draw.auto_draw_all()
-    w = Wednesday(draw, ticket_list)
+    the_draw = Draw()
+    the_draw.auto_draw_all()
+    w = Wednesday(the_draw, ticket_list)

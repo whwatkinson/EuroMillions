@@ -126,11 +126,11 @@ class LuckDipTicketList:
         ticket_cost: float = 2.5,
         duplicate_tickets: bool = False,
     ):
-        self.tickets = self.get_tickets(
+        self.tickets: List[LuckDipTicket] = self.get_tickets(
             number_of_tickets, ticket_cost, duplicate_tickets
         )
-        self.total_cost = sum(ticket.ticket_cost for ticket in self.tickets)
-        self.duplicate_tickets = duplicate_tickets
+        self.total_cost: float = sum(ticket.ticket_cost for ticket in self.tickets)
+        self.duplicate_tickets: bool = duplicate_tickets
 
     @staticmethod
     def get_tickets(
