@@ -54,7 +54,7 @@ class Wednesday:
 
 
 if __name__ == "__main__":
-    ticket_list = LuckDipTicketList(number_of_tickets=1000)
+    ticket_list = LuckDipTicketList(number_of_tickets=100)
     the_draw = Draw()
     the_draw.auto_draw_all()
     w = Wednesday(the_draw, ticket_list)

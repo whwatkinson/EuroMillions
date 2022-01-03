@@ -1,7 +1,7 @@
 from datetime import datetime
 from random import randint
 from typing import Set, Union
-from uuid import uuid4, UUID
+from uuid import UUID, uuid4
 
 from numbers_base import NumbersBase
 

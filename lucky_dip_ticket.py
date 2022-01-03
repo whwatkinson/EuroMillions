@@ -1,6 +1,6 @@
 from random import randint
-from typing import List, Set, Tuple
-from uuid import uuid4, UUID
+from typing import List, Set, Optional
+from uuid import UUID, uuid4
 
 from pydantic import BaseModel, validator
 
@@ -12,15 +12,30 @@ class ExportTicket(BaseModel):
     ticket_cost: float
     main_numbers: Set[int]
     main_matches_count: int
-    main_matches: Set[int]
+    main_matches: Optional[Set[int]]
     lucky_numbers: Set[int]
     lucky_matches_count: int
-    lucky_matches: Set[int]
+    lucky_matches: Optional[Set[int]]
     winner: bool
     has_all_main_numbers: bool
     has_both_lucky_numbers: bool
     total_matches: int
     prize: int
+
+    def names(self):
+        return self.__fields__.keys()
+
+    @validator("main_matches", "lucky_matches")
+    def set_to_tuple(cls, value) -> Optional[Set[int]]:
+
+        if len(value) == 0:
+            return None
+        else:
+            return value
+
+
+# todo prize money
+# https://en.wikipedia.org/wiki/EuroMillions#Prize_structure
 
 
 class LuckDipTicket(NumbersBase):
@@ -105,8 +120,8 @@ class LuckDipTicket(NumbersBase):
         return numbers
 
     def prepare_ticket_for_export(self) -> ExportTicket:
-        # TODO fix ughh kludge...
-        d = self.__dict__
+        # TODO fix ugh kludge...
+        d = {k: v for k, v in self.__dict__.items()}
         d["total_matches"] = self.total_matches
         export_ticket = ExportTicket(**d)
         return export_ticket

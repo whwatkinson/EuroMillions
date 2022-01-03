@@ -4,24 +4,27 @@ from enum import Enum
 from openpyxl import Workbook
 
 from draw import Draw
+from lucky_dip_ticket import LuckDipTicketList, ExportTicket
 from wednesday import Wednesday
-from lucky_dip_ticket import LuckDipTicketList
 
-TICKETS = 1000
+TICKETS = 100
 
 
-class ResultsSheet(Enum):
+class Sheets(Enum):
     DRAW_RESULTS = "DRAW_RESULTS"
     TICKET_RESULTS_ALL = "TICKET_RESULTS_ALL"
     TICKET_RESULTS_WINNERS = "TICKET_RESULTS_WINNERS"
+    METADATA = "METADATA"
 
 
 def setup_csv_file() -> Workbook:
-
+    # TODO make this dynamic
     wb = Workbook()
 
+    fields = ExportTicket.__fields__.keys()
+
     # Draw results
-    sheet = ResultsSheet.DRAW_RESULTS.value
+    sheet = Sheets.DRAW_RESULTS.value
     wb.active.title = sheet
     data = wb[sheet]
     active_row = 1
@@ -33,7 +36,7 @@ def setup_csv_file() -> Workbook:
     data.cell(row=active_row, column=5).value = "lucky_numbers"
 
     # Ticket results
-    sheet = ResultsSheet.TICKET_RESULTS_ALL.value
+    sheet = Sheets.TICKET_RESULTS_ALL.value
     wb.create_sheet(sheet)
     data = wb[sheet]
     active_row = 1
@@ -53,11 +56,11 @@ def setup_csv_file() -> Workbook:
     data.cell(row=active_row, column=13).value = "prize"
 
     # Ticket results winners
-    sheet = ResultsSheet.TICKET_RESULTS_WINNERS.value
+    sheet = Sheets.TICKET_RESULTS_WINNERS.value
     wb.create_sheet(sheet)
     data = wb[sheet]
     active_row = 1
-    # TODO make this dynamic
+
     data.cell(row=active_row, column=1).value = "uuid"
     data.cell(row=active_row, column=2).value = "ticket_cost"
     data.cell(row=active_row, column=3).value = "main_numbers"
@@ -80,7 +83,7 @@ def add_results_csv(workbook: Workbook, event: Wednesday):
     draw = event.draw
     tickets = event.tickets
 
-    data = workbook[ResultsSheet.DRAW_RESULTS.value]
+    data = workbook[Sheets.DRAW_RESULTS.value]
     active_row = 2
     data.cell(row=active_row, column=1).value = draw.draw_date
     data.cell(row=active_row, column=2).value = str(draw.uuid)
@@ -89,7 +92,7 @@ def add_results_csv(workbook: Workbook, event: Wednesday):
     data.cell(row=active_row, column=5).value = str(draw.lucky_numbers)
 
     # all tickets
-    data = workbook[ResultsSheet.TICKET_RESULTS_ALL.value]
+    data = workbook[Sheets.TICKET_RESULTS_ALL.value]
     active_row = 2
     for ticket in tickets.tickets:
         export = ticket.prepare_ticket_for_export()
@@ -103,7 +106,7 @@ def add_results_csv(workbook: Workbook, event: Wednesday):
 
     # winner tickets
 
-    data = workbook[ResultsSheet.TICKET_RESULTS_WINNERS.value]
+    data = workbook[Sheets.TICKET_RESULTS_WINNERS.value]
     active_row = 2
     winners = event.get_winners()
 
