@@ -5,9 +5,9 @@ from openpyxl import Workbook
 
 from draw import Draw
 from lucky_dip_ticket import LuckDipTicketList, ExportTicket
-from wednesday import Wednesday
+from tuesday import Tuesday
 
-TICKETS = 100
+TICKETS = 1000
 
 
 class Sheets(Enum):
@@ -54,6 +54,7 @@ def setup_csv_file() -> Workbook:
     data.cell(row=active_row, column=11).value = "has_both_lucky_numbers"
     data.cell(row=active_row, column=12).value = "total_matches"
     data.cell(row=active_row, column=13).value = "prize"
+    data.cell(row=active_row, column=14).value = "prize_identifier"
 
     # Ticket results winners
     sheet = Sheets.TICKET_RESULTS_WINNERS.value
@@ -74,11 +75,12 @@ def setup_csv_file() -> Workbook:
     data.cell(row=active_row, column=11).value = "has_both_lucky_numbers"
     data.cell(row=active_row, column=12).value = "total_matches"
     data.cell(row=active_row, column=13).value = "prize"
+    data.cell(row=active_row, column=14).value = "prize_identifier"
 
     return wb
 
 
-def add_results_csv(workbook: Workbook, event: Wednesday):
+def add_results_csv(workbook: Workbook, event: Tuesday):
 
     draw = event.draw
     tickets = event.tickets
@@ -121,7 +123,7 @@ def add_results_csv(workbook: Workbook, event: Wednesday):
         active_row += 1
 
 
-def data_to_csv(res: Wednesday):
+def data_to_csv(res: Tuesday):
 
     # create wb
     time_created = datetime.now()
@@ -141,7 +143,7 @@ if __name__ == "__main__":
     ticket_list = LuckDipTicketList(number_of_tickets=TICKETS)
     the_draw = Draw()
     the_draw.auto_draw_all()
-    w = Wednesday(the_draw, ticket_list)
+    w = Tuesday(the_draw, ticket_list)
     w.check_results()
 
     data_to_csv(w)

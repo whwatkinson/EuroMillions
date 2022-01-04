@@ -21,6 +21,7 @@ class ExportTicket(BaseModel):
     has_both_lucky_numbers: bool
     total_matches: int
     prize: int
+    prize_identifier: int
 
     def names(self):
         return self.__fields__.keys()
@@ -32,10 +33,6 @@ class ExportTicket(BaseModel):
             return None
         else:
             return value
-
-
-# todo prize money
-# https://en.wikipedia.org/wiki/EuroMillions#Prize_structure
 
 
 class LuckDipTicket(NumbersBase):
@@ -151,6 +148,10 @@ class LuckDipTicketList:
         )
         self.total_cost: float = sum(ticket.ticket_cost for ticket in self.tickets)
         self.duplicate_tickets: bool = duplicate_tickets
+
+    @property
+    def total_winnings(self):
+        return sum(ticket.prize for ticket in self.tickets)
 
     @staticmethod
     def get_tickets(
