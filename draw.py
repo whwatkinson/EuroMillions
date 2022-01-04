@@ -26,7 +26,7 @@ class Draw(NumbersBase):
         self.is_rollover: bool = False
         self.main_numbers: Set[int] = self.clean_set()
         self.lucky_numbers: Set[int] = self.clean_set()
-        self.prize_allocation = {
+        self.prize_allocation: dict = {
             0: 0,
             2: 3,
             12: 5,
