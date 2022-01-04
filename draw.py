@@ -22,7 +22,7 @@ class Draw(NumbersBase):
     def __init__(self, total_prize_money: Union[float, int] = 1000000.00):
         self.uuid: UUID = uuid4()
         self.draw_date = datetime.now().date()
-        self.total_prize_money: float = self.parse_prize_money(total_prize_money)
+        self.total_prize_money: int = self.parse_prize_money(total_prize_money)
         self.is_rollover: bool = False
         self.main_numbers: Set[int] = self.clean_set()
         self.lucky_numbers: Set[int] = self.clean_set()
@@ -44,9 +44,9 @@ class Draw(NumbersBase):
         }
 
     @staticmethod
-    def parse_prize_money(total_prize_money: Union[float, int]) -> float:
+    def parse_prize_money(total_prize_money: Union[float, int]) -> int:
         try:
-            return float(total_prize_money)
+            return int(total_prize_money)
         except ValueError:
             raise PrizeMoneyIncorrect(total_prize_money=total_prize_money)
 
