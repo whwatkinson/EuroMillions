@@ -17,6 +17,7 @@ class Tuesday:
         self.tickets: LuckDipTicketList = tickets
         self.draw_checked: bool = False
         self.time_checked: Optional[datetime] = None
+        self.number_jackpots: int = 1
 
     def check_results(self) -> None:
 
@@ -31,8 +32,21 @@ class Tuesday:
                 for l_number in self.draw.lucky_numbers:
                     ticket.lucky_number_match_check(l_number)
 
+                if ticket.prize_identifier == 25:
+                    self.number_jackpots += 1
+                    self.tickets.has_jackpot = True
+
+            # Separate as need to know how many jackpots?
+            for ticket in self.tickets.tickets:
                 try:
-                    ticket.prize = self.draw.prize_allocation[ticket.prize_identifier]
+                    if ticket.prize_identifier == 25:
+                        factor = self.number_jackpots
+                    else:
+                        factor = 1
+
+                    ticket.prize = (
+                        self.draw.prize_allocation[ticket.prize_identifier] / factor
+                    )
                 except KeyError:
                     ticket.prize = 0
 

@@ -148,6 +148,7 @@ class LuckDipTicketList:
         )
         self.total_cost: float = sum(ticket.ticket_cost for ticket in self.tickets)
         self.duplicate_tickets: bool = duplicate_tickets
+        self.has_jackpot: bool = False
 
     @property
     def total_winnings(self):
