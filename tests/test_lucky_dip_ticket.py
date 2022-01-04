@@ -108,10 +108,14 @@ class TestLuckyDipTicket:
             ({8, 9, 10, 11, 12}, {13, 14}, 0),
             ({34, 5, 41, 42, 18}, {10, 11}, 1),
             ({34, 5, 41, 42, 18}, {6, 11}, 11),
-
-        ]
+        ],
     )
-    def test_lucky_dip_prize_identifier(self, main_numbers: Set[int], lucky_numbers: Set[int], expected_prize_identifier: int):
+    def test_lucky_dip_prize_identifier(
+        self,
+        main_numbers: Set[int],
+        lucky_numbers: Set[int],
+        expected_prize_identifier: int,
+    ):
         test_ticket = LuckDipTicket()
         test_ticket.main_numbers = {1, 2, 3, 4, 5}
         test_ticket.lucky_numbers = {6, 7}
@@ -122,10 +126,7 @@ class TestLuckyDipTicket:
         for num in lucky_numbers:
             test_ticket.lucky_number_match_check(num)
 
-
         assert test_ticket.prize_identifier == expected_prize_identifier
-
-
 
     def test_number_match_count(self):
 

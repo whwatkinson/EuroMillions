@@ -9,8 +9,6 @@ class NumbersBase:
     main_numbers: set
     lucky_numbers: set
 
-
-
     @staticmethod
     def repr_formatter(numbers: Set[int]) -> str:
         """
