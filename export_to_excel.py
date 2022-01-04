@@ -4,7 +4,7 @@ from enum import Enum
 from openpyxl import Workbook
 
 from draw import Draw
-from lucky_dip_ticket import LuckDipTicketList, ExportTicket
+from lucky_dip_ticket import ExportTicket, LuckDipTicketList
 from tuesday import Tuesday
 
 TICKETS = 1000

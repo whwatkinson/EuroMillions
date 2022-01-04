@@ -1,5 +1,5 @@
 from random import randint
-from typing import List, Set, Optional
+from typing import List, Optional, Set
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel, validator
