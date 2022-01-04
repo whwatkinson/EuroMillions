@@ -53,6 +53,7 @@ class LuckDipTicket(NumbersBase):
         self.has_all_main_numbers: bool = False
         self.has_both_lucky_numbers: bool = False
         self.prize: float = 0
+        self.prize_identifier: int = 0
 
     @property
     def total_matches(self):
@@ -67,7 +68,9 @@ class LuckDipTicket(NumbersBase):
         if number_drawn in self.main_numbers:
             self.main_matches_count += 1
             self.main_matches.add(number_drawn)
+            # TODO needs a test
             self.winner = True
+            self.prize_identifier += 1
 
             if self.main_matches_count == self.TOTAL_MAIN_NUMBERS:
                 self.has_all_main_numbers = True
@@ -81,7 +84,9 @@ class LuckDipTicket(NumbersBase):
         if number_drawn in self.lucky_numbers:
             self.lucky_matches_count += 1
             self.lucky_matches.add(number_drawn)
+            # TODO needs a test
             self.winner = True
+            self.prize_identifier += 10
 
             if self.lucky_matches_count == self.TOTAL_LUCKY_NUMBERS:
                 self.has_both_lucky_numbers = True

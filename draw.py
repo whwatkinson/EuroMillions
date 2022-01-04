@@ -23,8 +23,11 @@ class Draw(NumbersBase):
         self.uuid: UUID = uuid4()
         self.draw_date = datetime.now().date()
         self.total_prize_money: float = self.parse_prize_money(total_prize_money)
+        self.is_rollover: bool = False
         self.main_numbers: Set[int] = self.clean_set()
         self.lucky_numbers: Set[int] = self.clean_set()
+
+        self.prize_allocation = {2: 3, 12: 5, 21: 6, 3: 8, 13: 9, 22: 12, 4: 33, 23: 48, 14: 101, 24: 1094, 5: 17555, 15: 169001, 25: int(self.total_prize_money*0.4)}
 
     @staticmethod
     def parse_prize_money(total_prize_money: Union[float, int]) -> float:

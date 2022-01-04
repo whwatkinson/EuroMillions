@@ -101,6 +101,32 @@ class TestLuckyDipTicket:
 
         assert test_ticket.winner == expected_winner
 
+    @mark.parametrize(
+        "main_numbers, lucky_numbers, expected_prize_identifier",
+        [
+            ({1, 2, 3, 4, 5}, {6, 7}, 25),
+            ({8, 9, 10, 11, 12}, {13, 14}, 0),
+            ({34, 5, 41, 42, 18}, {10, 11}, 1),
+            ({34, 5, 41, 42, 18}, {6, 11}, 11),
+
+        ]
+    )
+    def test_lucky_dip_prize_identifier(self, main_numbers: Set[int], lucky_numbers: Set[int], expected_prize_identifier: int):
+        test_ticket = LuckDipTicket()
+        test_ticket.main_numbers = {1, 2, 3, 4, 5}
+        test_ticket.lucky_numbers = {6, 7}
+
+        for num in main_numbers:
+            test_ticket.main_number_match_check(num)
+
+        for num in lucky_numbers:
+            test_ticket.lucky_number_match_check(num)
+
+
+        assert test_ticket.prize_identifier == expected_prize_identifier
+
+
+
     def test_number_match_count(self):
 
         test_ticket = LuckDipTicket()
@@ -124,7 +150,7 @@ class TestLuckyDipTicket:
         assert test_ticket.lucky_matches_count == test_ticket.TOTAL_LUCKY_NUMBERS
         assert test_ticket.has_both_lucky_numbers is True
 
-    @mark.xfail
+    # @mark.xfail
     def test_prepare_ticket_for_export(self):
 
         test_ticket = LuckDipTicket()
@@ -134,6 +160,6 @@ class TestLuckyDipTicket:
 
         test_export = test_ticket.prepare_ticket_for_export()
 
-        assert test_export["main_numbers"] == {1, 2, 3, 4, 5}
-        assert test_export["lucky_numbers"] == {6, 7}
-        assert test_export["winner"] is True
+        assert test_export.main_numbers == {1, 2, 3, 4, 5}
+        assert test_export.lucky_numbers == {6, 7}
+        assert test_export.winner is True
