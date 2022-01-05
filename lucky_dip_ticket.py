@@ -1,10 +1,8 @@
 from random import randint
-from typing import List, Set, Tuple
-from uuid import uuid4, UUID
-
+from typing import List, Optional, Set
+from uuid import UUID, uuid4
 
 from pydantic import BaseModel, validator
-
 
 from numbers_base import NumbersBase
 
@@ -14,20 +12,27 @@ class ExportTicket(BaseModel):
     ticket_cost: float
     main_numbers: Set[int]
     main_matches_count: int
-    main_matches: Set[int]
+    main_matches: Optional[Set[int]]
     lucky_numbers: Set[int]
     lucky_matches_count: int
-    lucky_matches: Set[int]
+    lucky_matches: Optional[Set[int]]
     winner: bool
     has_all_main_numbers: bool
     has_both_lucky_numbers: bool
+    total_matches: int
     prize: int
+    prize_identifier: int
 
-    # @validator('main_numbers', 'main_matches', 'lucky_numbers', 'lucky_matches')
-    # def set_to_tuple(cls, value):
-    #
-    #     if type(value) is set:
-    #         return tuple(value)
+    def names(self):
+        return self.__fields__.keys()
+
+    @validator("main_matches", "lucky_matches")
+    def set_to_tuple(cls, value) -> Optional[Set[int]]:
+
+        if len(value) == 0:
+            return None
+        else:
+            return value
 
 
 class LuckDipTicket(NumbersBase):
@@ -45,6 +50,11 @@ class LuckDipTicket(NumbersBase):
         self.has_all_main_numbers: bool = False
         self.has_both_lucky_numbers: bool = False
         self.prize: float = 0
+        self.prize_identifier: int = 0
+
+    @property
+    def total_matches(self):
+        return self.main_matches_count + self.lucky_matches_count
 
     def main_number_match_check(self, number_drawn: int) -> None:
         """
@@ -55,7 +65,9 @@ class LuckDipTicket(NumbersBase):
         if number_drawn in self.main_numbers:
             self.main_matches_count += 1
             self.main_matches.add(number_drawn)
+            # TODO needs a test
             self.winner = True
+            self.prize_identifier += 1
 
             if self.main_matches_count == self.TOTAL_MAIN_NUMBERS:
                 self.has_all_main_numbers = True
@@ -69,7 +81,9 @@ class LuckDipTicket(NumbersBase):
         if number_drawn in self.lucky_numbers:
             self.lucky_matches_count += 1
             self.lucky_matches.add(number_drawn)
+            # TODO needs a test
             self.winner = True
+            self.prize_identifier += 10
 
             if self.lucky_matches_count == self.TOTAL_LUCKY_NUMBERS:
                 self.has_both_lucky_numbers = True
@@ -108,7 +122,10 @@ class LuckDipTicket(NumbersBase):
         return numbers
 
     def prepare_ticket_for_export(self) -> ExportTicket:
-        export_ticket = ExportTicket(**self.__dict__)
+        # TODO fix ugh kludge...
+        d = {k: v for k, v in self.__dict__.items()}
+        d["total_matches"] = self.total_matches
+        export_ticket = ExportTicket(**d)
         return export_ticket
 
     def __repr__(self) -> str:
@@ -131,6 +148,11 @@ class LuckDipTicketList:
         )
         self.total_cost: float = sum(ticket.ticket_cost for ticket in self.tickets)
         self.duplicate_tickets: bool = duplicate_tickets
+        self.has_jackpot: bool = False
+
+    @property
+    def total_winnings(self):
+        return sum(ticket.prize for ticket in self.tickets)
 
     @staticmethod
     def get_tickets(

@@ -11,12 +11,14 @@ class ResultsAlreadyCheckedError(Exception):
         super().__init__(self.message)
 
 
-class Wednesday:
+class Tuesday:
     def __init__(self, draw: Draw, tickets: LuckDipTicketList):
         self.draw: Draw = draw
         self.tickets: LuckDipTicketList = tickets
         self.draw_checked: bool = False
         self.time_checked: Optional[datetime] = None
+        self.jackpots: int = 0
+        self.total_prize_money = draw.total_prize_money
 
     def check_results(self) -> None:
 
@@ -31,6 +33,15 @@ class Wednesday:
                 for l_number in self.draw.lucky_numbers:
                     ticket.lucky_number_match_check(l_number)
 
+                if ticket.prize_identifier == 25:
+                    self.jackpots += 1
+                    self.tickets.has_jackpot = True
+
+                try:
+                    ticket.prize = self.draw.prize_allocation[ticket.prize_identifier]
+                except KeyError:
+                    ticket.prize = 0
+
             self.time_checked = datetime.now()
             self.draw_checked = True
         else:
@@ -42,7 +53,11 @@ class Wednesday:
 
         winners_sorted = sorted(
             winners,
-            key=lambda x: (x.main_matches_count, x.lucky_matches_count),
+            key=lambda x: (
+                x.main_matches_count,
+                x.total_matches,
+                x.lucky_matches_count,
+            ),
             reverse=True,
         )
 
@@ -50,7 +65,7 @@ class Wednesday:
 
 
 if __name__ == "__main__":
-    ticket_list = LuckDipTicketList(number_of_tickets=1000)
+    ticket_list = LuckDipTicketList(number_of_tickets=100)
     the_draw = Draw()
     the_draw.auto_draw_all()
-    w = Wednesday(the_draw, ticket_list)
+    w = Tuesday(the_draw, ticket_list)

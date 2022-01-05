@@ -1,6 +1,7 @@
+from datetime import datetime
 from random import randint
 from typing import Set, Union
-from uuid import uuid4, UUID
+from uuid import UUID, uuid4
 
 from numbers_base import NumbersBase
 
@@ -20,15 +21,32 @@ class PrizeMoneyIncorrect(Exception):
 class Draw(NumbersBase):
     def __init__(self, total_prize_money: Union[float, int] = 1000000.00):
         self.uuid: UUID = uuid4()
-        self.total_prize_money: float = self.parse_prize_money(total_prize_money)
+        self.draw_date = datetime.now().date()
+        self.total_prize_money: int = self.parse_prize_money(total_prize_money)
+        self.is_rollover: bool = False
         self.main_numbers: Set[int] = self.clean_set()
         self.lucky_numbers: Set[int] = self.clean_set()
+        self.prize_allocation: dict = {
+            0: 0,
+            2: 3,
+            12: 5,
+            21: 6,
+            3: 8,
+            13: 9,
+            22: 12,
+            4: 33,
+            23: 48,
+            14: 101,
+            24: 1094,
+            5: 17555,
+            15: 169001,
+            25: int(self.total_prize_money * 0.4),
+        }
 
     @staticmethod
-    def parse_prize_money(total_prize_money: Union[float, int]) -> float:
+    def parse_prize_money(total_prize_money: Union[float, int]) -> int:
         try:
-            prize = float(total_prize_money)
-            return prize
+            return int(total_prize_money)
         except ValueError:
             raise PrizeMoneyIncorrect(total_prize_money=total_prize_money)
 
@@ -48,7 +66,6 @@ class Draw(NumbersBase):
     def draw_main_number(self) -> None:
         """
         Draws one main number
-        :return: A random main number
         """
         if len(self.main_numbers) == self.TOTAL_MAIN_NUMBERS:
             raise DrawCompleteError(number_of_draws=self.TOTAL_MAIN_NUMBERS)
@@ -58,7 +75,6 @@ class Draw(NumbersBase):
     def draw_lucky_number(self) -> None:
         """
         Draws one lucky number
-        :return: A random lucky number
         """
 
         if len(self.lucky_numbers) == self.TOTAL_LUCKY_NUMBERS:
