@@ -66,7 +66,6 @@ class Draw(NumbersBase):
     def draw_main_number(self) -> None:
         """
         Draws one main number
-        :return: A random main number
         """
         if len(self.main_numbers) == self.TOTAL_MAIN_NUMBERS:
             raise DrawCompleteError(number_of_draws=self.TOTAL_MAIN_NUMBERS)
@@ -76,7 +75,6 @@ class Draw(NumbersBase):
     def draw_lucky_number(self) -> None:
         """
         Draws one lucky number
-        :return: A random lucky number
         """
 
         if len(self.lucky_numbers) == self.TOTAL_LUCKY_NUMBERS:
